@@ -111,7 +111,6 @@ def main(argv):
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
 				aixerror = find_most_recent(LOGDIR, 'AIX_ERRORS')
 				logs = [LOGDIR + "/" + aixlog, LOGDIR + "/" + aixerror]
-				sendTo = ["nathan@stormfrog.com"]
 				mailText = """
 Please Check the Wegmans AIX servers. One of the servers is reporting a directory that is over 90%. 
 Attached is 2 files.
@@ -123,7 +122,7 @@ This is an automaited email please to not respond.
 Thanks, 
 
 Your friendly neighborhood AIX Space Daemon"""
-				mailer.mail('nathan@stormfrog.com', 'Wegmans AIX Space Notification', mailText, logs, gmail_user, gmail_pwd)
+				mailer.mail(to_user, 'Wegmans AIX Space Notification', mailText, logs, gmail_user, gmail_pwd)
 			else:
 				print 'Spacewise everything is good'
 
