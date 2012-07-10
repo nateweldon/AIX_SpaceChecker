@@ -111,18 +111,7 @@ def main(argv):
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
 				aixerror = find_most_recent(LOGDIR, 'AIX_ERRORS')
 				logs = [LOGDIR + "/" + aixlog, LOGDIR + "/" + aixerror]
-				mailText = """
-Please Check the Wegmans AIX servers. One of the servers is reporting a directory that is over 90%. 
-Attached is 2 files.
-1) AIX_LOGGER_DATE = is the full debug log from the space check.
-2) AIX_ERROR_DATE = is the error log with only the Serves and Dir's with a problem.
-
-This is an automaited email please to not respond.
-
-Thanks, 
-
-Your friendly neighborhood AIX Space Daemon"""
-				mailer.mail(to_user, 'Wegmans AIX Space Notification', mailText, logs, gmail_user, gmail_pwd)
+				mailer.mail(to_user, subject, mailText, logs, gmail_user, gmail_pwd)
 			else:
 				print 'Spacewise everything is good'
 
