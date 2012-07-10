@@ -7,17 +7,16 @@ you will need to install paramiko and then you need a config file named config.p
 
 containing the following 
 
-HOME_SSH_CONFIG = 
-HOME = 
-WEG_SERVER_LIST = 
-#LOGDIR = 
-LOGDIR = 
+HOME_SSH_CONFIG = "" / home ssh config file
+HOME =  "" // home directory location
+SERVER_LIST =  "" // server list
+LOGDIR =  "" // log directory
 
 
-gmail_user = 
-gmail_pwd = 
+gmail_user = "" // gmail user to send email
+gmail_pwd =  "" // password
 
-to_user = 
+to_user =  "" // who the email gets sent to
 
 mailText = """
 
@@ -25,4 +24,4 @@ Thanks,
 
 Your friendly neighborhood AIX Space Daemon"""
 
-subject=
+subject= "" // subject of email

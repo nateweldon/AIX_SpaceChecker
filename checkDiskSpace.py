@@ -98,7 +98,7 @@ def main(argv):
 			aix_logger = setupLogger('AIX_LOGGER')
 			aix_errors = setupLogger('AIX_ERRORS')
 			email_check = 0
-			for server in WEG_SERVER_LIST:
+			for server in SERVER_LIST:
 				serverName = ssh_Config.lookup(server)
 				serverName = stripStupidWindowsInfo(serverName)
  				ssh_Client.connect(serverName['hostname'], username=serverName['user'], key_filename=serverName['identityfile'])
