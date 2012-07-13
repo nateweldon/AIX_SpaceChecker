@@ -101,19 +101,23 @@ def main(argv):
 			for server in SERVER_LIST:
 				serverName = ssh_Config.lookup(server)
 				serverName = stripStupidWindowsInfo(serverName)
- 				ssh_Client.connect(serverName['hostname'], username=serverName['user'], key_filename=serverName['identityfile'])
+				print " serverName" + serverName['hostname'] + " user " + serverName['user'] + " Key" + serverName['identityfile']
+ 				ssh_Client.connect(serverName['hostname'], username=serverName['user'], password=sshPassword, key_filename=serverName['identityfile'])
 				check_cmd = " df | sed '1d' | awk '{print $1 ',' $4 ',' $7}' " #| cut -d'%' -f1"
 				cmd = " df "
 				logInformation(ssh_Client, aix_logger, cmd, serverName['hostname'])
 				email_check += spaceCheck(ssh_Client, aix_errors, check_cmd, serverName['hostname'])
 			if (email_check > 0):
-				print "sending email"
+				print "sending error email"
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
 				aixerror = find_most_recent(LOGDIR, 'AIX_ERRORS')
 				logs = [LOGDIR + "/" + aixlog, LOGDIR + "/" + aixerror]
-				mailer.mail(to_user, subject, mailText, logs, gmail_user, gmail_pwd)
+				mailer.mail(errorUser, errorSubject, errormailText, logs, gmailUser, gmailPwd)
 			else:
-				print 'Spacewise everything is good'
+				print "sending ok email"
+				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
+				logs = [LOGDIR + "/" + aixlog]
+				mailer.mail(okUser, okSubject, okmailText, logs, gmailUser, gmailPwd)
 
 
 if __name__ == '__main__':
