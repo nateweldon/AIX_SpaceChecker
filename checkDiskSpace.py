@@ -44,16 +44,17 @@ def stripStupidWindowsInfo(serverInfo):
 
 
 def logInformation(client, logger, cmd, name):
-	stdin, stdout, stderr = client.exec_command(cmd)
 	print " ++++++++++++++++++++++++++++++++++++" + name + "++++++++++++++++++++++++++++++++++++++++++++"
 	logger.debug(" ++++++++++++++++++++++++++++++++++++" + name + "++++++++++++++++++++++++++++++++++++++++++++" )
-	for i, line, in enumerate(stdout):
-		line = line.rstrip()
-		if 'tempfs' not in line:
-			print "%d: %s" % (i, line)
-			logger.debug("%d: %s" % (i, line))
-	print "\n"
-	logger.debug("\n")
+	for command in cmd:
+		stdin, stdout, stderr = client.exec_command(command)
+		for i, line, in enumerate(stdout):
+			line = line.rstrip()
+			if 'tempfs' not in line:
+				print "%d: %s" % (i, line)
+				logger.debug("%d: %s" % (i, line))
+		print "\n"
+		logger.debug("\n")
 
 def spaceCheck(client, logger, cmd, name):
 	space_warning = 0
@@ -105,14 +106,16 @@ def main(argv):
  				ssh_Client.connect(serverName['hostname'], username=serverName['user'], password=sshPassword, key_filename=serverName['identityfile'])
 				check_cmd = " df | sed '1d' | awk '{print $1 ',' $4 ',' $7}' " #| cut -d'%' -f1"
 				cmd = " df "
-				logInformation(ssh_Client, aix_logger, cmd, serverName['hostname'])
+				logCmd = [cmd, 'iostat']
+				logInformation(ssh_Client, aix_logger, logCmd, serverName['hostname'])
+				#logInformation(ssh_Client, aix_logger, 'iostat', serverName['hostname'])
 				email_check += spaceCheck(ssh_Client, aix_errors, check_cmd, serverName['hostname'])
 			if (email_check > 0):
 				print "sending error email"
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
 				aixerror = find_most_recent(LOGDIR, 'AIX_ERRORS')
 				logs = [LOGDIR + "/" + aixlog, LOGDIR + "/" + aixerror]
-				mailer.mail(errorUser, errorSubject, errormailText, logs, gmailUser, gmailPwd)
+				#mailer.mail(errorUser, errorSubject, errormailText, logs, gmailUser, gmailPwd)
 			else:
 				print "sending ok email"
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
