@@ -115,7 +115,7 @@ def main(argv):
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
 				aixerror = find_most_recent(LOGDIR, 'AIX_ERRORS')
 				logs = [LOGDIR + "/" + aixlog, LOGDIR + "/" + aixerror]
-				#mailer.mail(errorUser, errorSubject, errormailText, logs, gmailUser, gmailPwd)
+				mailer.mail(errorUser, errorSubject, errormailText, logs, gmailUser, gmailPwd)
 			else:
 				print "sending ok email"
 				aixlog = find_most_recent(LOGDIR, 'AIX_LOGGER')
